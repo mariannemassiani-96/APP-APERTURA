@@ -1,0 +1,3 @@
+Set-Location "$PSScriptRoot\..\apps\public"
+npm install
+npm run dev -- -p 3001
