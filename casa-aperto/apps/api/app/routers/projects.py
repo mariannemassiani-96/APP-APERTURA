@@ -53,6 +53,24 @@ def list_openings(
     return db.query(Opening).filter(Opening.project_id == project.id).all()
 
 
+@router.get("/{project_id}/openings/{opening_id}", response_model=OpeningOut)
+def get_opening(
+    project_id: int,
+    opening_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    project = _get_project_or_404(project_id, current_user, db)
+    opening = (
+        db.query(Opening)
+        .filter(Opening.id == opening_id, Opening.project_id == project.id)
+        .first()
+    )
+    if not opening:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Opening not found")
+    return opening
+
+
 @router.post("/{project_id}/openings", response_model=OpeningOut, status_code=201)
 def create_opening(
     project_id: int,

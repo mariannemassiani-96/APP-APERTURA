@@ -61,6 +61,10 @@ export function createOpening(projectId: number, payload: OpeningPayload) {
   });
 }
 
+export function getOpening(projectId: number, openingId: number) {
+  return apiFetch(`/projects/${projectId}/openings/${openingId}`);
+}
+
 export function getUsers() {
   return apiFetch('/admin/users');
 }

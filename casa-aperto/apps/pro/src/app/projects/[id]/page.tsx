@@ -71,6 +71,9 @@ export default function ProjectDetailPage() {
             <li key={opening.id} style={{ marginBottom: '8px' }}>
               {openingTypeLabels[opening.type]} — {opening.width} x {opening.height} mm — x
               {opening.quantity}
+              <span style={{ marginLeft: '8px' }}>
+                <Link href={`/projects/${projectId}/openings/${opening.id}`}>Voir 3D</Link>
+              </span>
             </li>
           ))}
         </ul>
