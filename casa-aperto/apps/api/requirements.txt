@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg[binary]
+passlib[bcrypt]
+python-jose[cryptography]
+pydantic-settings
+alembic
+structlog
+pytest
+httpx
+ruff
+black
