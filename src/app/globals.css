@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Variables de marque blanche — repli sur la palette Apertura Di Corsica.
+     Elles sont réécrites au runtime par l'offre (voir OffreView). */
+  --marque-primaire: #4f5e46; /* Vert Maquis */
+  --marque-accent: #c27a4a; /* Cuivre */
+  --marque-encre: #1a1a1a; /* Noir */
+  --marque-fond: #f5f0e8; /* Crème */
+}
+
+@layer base {
+  body {
+    @apply bg-marque-fond text-marque-encre font-texte antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-titre;
+  }
+}
+
+@layer utilities {
+  /* Dégradé sobre réutilisé pour l'en-tête. */
+  .fond-marque {
+    background:
+      radial-gradient(120% 100% at 80% -10%, color-mix(in srgb, var(--marque-accent) 14%, transparent), transparent),
+      var(--marque-fond);
+  }
+}
