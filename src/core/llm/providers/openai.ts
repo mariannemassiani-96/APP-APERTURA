@@ -14,18 +14,23 @@ export function creerOpenAiClient(apiKey: string, modele: string): LlmClient {
   return {
     nom: `openai:${model}`,
     async complete(messages: LlmMessage[], options?: LlmOptions): Promise<string> {
+      // `temperature` uniquement si explicitement demandé (certains modèles récents la refusent).
+      const corps: Record<string, unknown> = {
+        model,
+        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+        max_tokens: options?.maxTokens ?? 800,
+      };
+      if (options?.temperature !== undefined) {
+        corps.temperature = options.temperature;
+      }
+
       const reponse = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
           authorization: `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({
-          model,
-          messages: messages.map((m) => ({ role: m.role, content: m.content })),
-          max_tokens: options?.maxTokens ?? 800,
-          temperature: options?.temperature ?? 0.2,
-        }),
+        body: JSON.stringify(corps),
       });
 
       if (!reponse.ok) {

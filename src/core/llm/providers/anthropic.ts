@@ -26,6 +26,18 @@ export function creerAnthropicClient(apiKey: string, modele: string): LlmClient 
         .filter((m) => m.role !== 'system')
         .map((m) => ({ role: m.role, content: m.content }));
 
+      // On n'envoie `temperature` QUE s'il est explicitement demandé : les modèles
+      // Claude récents la refusent (paramètre déprécié). Par défaut, on l'omet.
+      const corps: Record<string, unknown> = {
+        model,
+        system,
+        messages: conversation,
+        max_tokens: options?.maxTokens ?? 800,
+      };
+      if (options?.temperature !== undefined) {
+        corps.temperature = options.temperature;
+      }
+
       const reponse = await fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -33,13 +45,7 @@ export function creerAnthropicClient(apiKey: string, modele: string): LlmClient 
           'x-api-key': apiKey,
           'anthropic-version': VERSION,
         },
-        body: JSON.stringify({
-          model,
-          system,
-          messages: conversation,
-          max_tokens: options?.maxTokens ?? 800,
-          temperature: options?.temperature ?? 0.2,
-        }),
+        body: JSON.stringify(corps),
       });
 
       if (!reponse.ok) {
