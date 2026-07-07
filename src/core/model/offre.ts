@@ -92,6 +92,26 @@ export interface Poste {
   preuves: Preuve[];
 }
 
+/**
+ * Plan schématique du logement (générique, optionnel).
+ *
+ * Ce n'est PAS un plan d'architecte : de simples pièces posées sur une grille en
+ * unités abstraites (x/y = coin haut-gauche). L'UI normalise ces coordonnées pour
+ * dessiner un plan responsive, et positionne chaque poste sur le mur indiqué par
+ * sa `localisation.façade`. Aucune géométrie métier n'est codée dans le moteur.
+ */
+export interface PiecePlan {
+  nom: string; // doit correspondre à Localisation.piece
+  x: number;
+  y: number;
+  largeur: number;
+  hauteur: number;
+}
+
+export interface PlanLogement {
+  pieces: PiecePlan[];
+}
+
 /** Identité + marque blanche du professionnel émetteur. */
 export interface Branding {
   couleurs: {
@@ -112,6 +132,8 @@ export interface Offre {
   pro: { nom: string; branding: Branding };
   client: { nom: string };
   postes: Poste[];
+  /** Plan schématique optionnel du logement, pour le mode « plan ». */
+  plan?: PlanLogement;
   /** Marque explicitement une offre comme donnée d'exemple (jamais présentée comme certifiée). */
   exemple?: boolean;
 }

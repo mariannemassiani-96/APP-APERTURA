@@ -15,11 +15,15 @@ const SUGGESTIONS = [
 ];
 
 /**
- * Assistant « Demander ».
+ * Assistant « Demander » — panneau NON-BLOQUANT.
  *
- * Interroge /api/demander, qui nourrit la couche LLM UNIQUEMENT avec les faits
- * de cette offre + la base de connaissances du secteur. L'assistant explique et
- * s'appuie sur les faits ; il ne doit jamais inventer de chiffre.
+ * C'est une fenêtre flottante (coin bas-droit sur ordinateur, feuille en bas sur
+ * mobile) SANS voile : le devis derrière reste défilable et cliquable pendant la
+ * conversation. On peut donc poser une question et continuer à explorer l'offre
+ * en même temps.
+ *
+ * Interroge /api/demander, qui nourrit la couche LLM UNIQUEMENT avec les faits de
+ * cette offre + la base de connaissances. L'assistant explique, ne devine aucun chiffre.
  */
 export function DemanderPanel({ offreId }: { offreId: string }) {
   const [ouvert, setOuvert] = useState(false);
@@ -80,105 +84,100 @@ export function DemanderPanel({ offreId }: { offreId: string }) {
         </button>
       )}
 
-      {/* Panneau */}
+      {/* Fenêtre non-bloquante (pas de voile : le devis reste utilisable) */}
       {ouvert && (
-        <div className="fixed inset-0 z-50 flex justify-end sm:p-4">
-          {/* voile */}
-          <div
-            className="absolute inset-0 bg-noir/30"
-            onClick={() => setOuvert(false)}
-            aria-hidden
-          />
-          <section className="relative flex h-full w-full flex-col bg-white shadow-carteHover sm:h-auto sm:max-h-full sm:w-[420px] sm:rounded-xl2">
-            <header className="flex items-center justify-between border-b border-noir/10 px-5 py-4">
-              <div>
-                <h2 className="text-lg font-semibold">Demander</h2>
-                <p className="text-xs text-noir/50">
-                  Réponses fondées sur votre devis
-                  {fournisseur ? ` · via ${fournisseur}` : ''}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setOuvert(false)}
-                className="rounded-full p-2 text-noir/50 hover:bg-creme"
-                aria-label="Fermer"
-              >
-                ✕
-              </button>
-            </header>
-
-            <div ref={zoneRef} className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
-              {messages.length === 0 && (
-                <div className="text-sm text-noir/60">
-                  <p className="mb-3">
-                    Posez une question sur ce devis. Je m’appuie uniquement sur les
-                    faits qu’il contient ; si l’information n’y est pas, je vous le dis.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {SUGGESTIONS.map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => envoyer(s)}
-                        className="rounded-full border border-noir/15 px-3 py-1 text-xs transition hover:border-cuivre hover:text-cuivre"
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {messages.map((m, i) => (
-                <div
-                  key={i}
-                  className={m.role === 'user' ? 'flex justify-end' : 'flex justify-start'}
-                >
-                  <div
-                    className={
-                      m.role === 'user'
-                        ? 'max-w-[85%] rounded-2xl rounded-br-sm bg-maquis px-4 py-2 text-sm text-creme'
-                        : 'max-w-[90%] whitespace-pre-line rounded-2xl rounded-bl-sm bg-creme px-4 py-2 text-sm text-noir/85'
-                    }
-                  >
-                    {m.content}
-                  </div>
-                </div>
-              ))}
-
-              {enCours && (
-                <div className="flex justify-start">
-                  <div className="rounded-2xl rounded-bl-sm bg-creme px-4 py-2 text-sm text-noir/50">
-                    …
-                  </div>
-                </div>
-              )}
+        <section
+          role="dialog"
+          aria-label="Assistant Demander"
+          className="fixed inset-x-0 bottom-0 z-40 flex h-[60vh] flex-col rounded-t-xl2 border border-noir/10 bg-white shadow-carteHover sm:inset-x-auto sm:bottom-5 sm:right-5 sm:h-[70vh] sm:max-h-[560px] sm:w-[380px] sm:rounded-xl2"
+        >
+          <header className="flex items-center justify-between gap-2 border-b border-noir/10 px-5 py-3">
+            <div>
+              <h2 className="text-lg font-semibold leading-tight">Demander</h2>
+              <p className="text-[11px] text-noir/50">
+                Réponses fondées sur votre devis
+                {fournisseur ? ` · via ${fournisseur}` : ''}
+              </p>
             </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                envoyer(saisie);
-              }}
-              className="flex items-center gap-2 border-t border-noir/10 px-4 py-3"
+            <button
+              type="button"
+              onClick={() => setOuvert(false)}
+              className="rounded-full px-2 py-1 text-noir/50 hover:bg-creme"
+              aria-label="Réduire l’assistant"
+              title="Réduire"
             >
-              <input
-                value={saisie}
-                onChange={(e) => setSaisie(e.target.value)}
-                placeholder="Votre question…"
-                className="flex-1 rounded-full border border-noir/15 bg-creme/40 px-4 py-2 text-sm outline-none focus:border-cuivre"
-              />
-              <button
-                type="submit"
-                disabled={enCours || saisie.trim().length === 0}
-                className="rounded-full bg-cuivre px-4 py-2 text-sm font-medium text-white transition disabled:opacity-40"
-              >
-                Envoyer
-              </button>
-            </form>
-          </section>
-        </div>
+              ▾
+            </button>
+          </header>
+
+          <div ref={zoneRef} className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
+            {messages.length === 0 && (
+              <div className="text-sm text-noir/60">
+                <p className="mb-2">
+                  Posez une question sur ce devis. Je m’appuie uniquement sur les faits
+                  qu’il contient ; si l’information n’y est pas, je vous le dis.
+                </p>
+                <p className="mb-3 text-xs text-noir/45">
+                  Vous pouvez continuer à parcourir votre devis pendant qu’on discute.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {SUGGESTIONS.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => envoyer(s)}
+                      className="rounded-full border border-noir/15 px-3 py-1 text-xs transition hover:border-cuivre hover:text-cuivre"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {messages.map((m, i) => (
+              <div key={i} className={m.role === 'user' ? 'flex justify-end' : 'flex justify-start'}>
+                <div
+                  className={
+                    m.role === 'user'
+                      ? 'max-w-[85%] rounded-2xl rounded-br-sm bg-maquis px-4 py-2 text-sm text-creme'
+                      : 'max-w-[90%] whitespace-pre-line rounded-2xl rounded-bl-sm bg-creme px-4 py-2 text-sm text-noir/85'
+                  }
+                >
+                  {m.content}
+                </div>
+              </div>
+            ))}
+
+            {enCours && (
+              <div className="flex justify-start">
+                <div className="rounded-2xl rounded-bl-sm bg-creme px-4 py-2 text-sm text-noir/50">…</div>
+              </div>
+            )}
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              envoyer(saisie);
+            }}
+            className="flex items-center gap-2 border-t border-noir/10 px-4 py-3"
+          >
+            <input
+              value={saisie}
+              onChange={(e) => setSaisie(e.target.value)}
+              placeholder="Votre question…"
+              className="flex-1 rounded-full border border-noir/15 bg-creme/40 px-4 py-2 text-sm outline-none focus:border-cuivre"
+            />
+            <button
+              type="submit"
+              disabled={enCours || saisie.trim().length === 0}
+              className="rounded-full bg-cuivre px-4 py-2 text-sm font-medium text-white transition disabled:opacity-40"
+            >
+              Envoyer
+            </button>
+          </form>
+        </section>
       )}
     </>
   );

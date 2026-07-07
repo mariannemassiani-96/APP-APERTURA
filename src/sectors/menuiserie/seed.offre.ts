@@ -31,6 +31,15 @@ export const offreExempleMenuiserie: Offre = {
   exemple: true,
   pro: { nom: 'Apertura Di Corsica', branding: brandingApertura },
   client: { nom: 'Famille Rossi' },
+  // Plan schématique (unités abstraites). Colonne gauche = Séjour (pleine hauteur) ;
+  // colonne droite = Chambre (haut) + Cuisine (bas). Nord en haut.
+  plan: {
+    pieces: [
+      { nom: 'Séjour', x: 0, y: 0, largeur: 6, hauteur: 8 },
+      { nom: 'Chambre', x: 6, y: 0, largeur: 4, hauteur: 4 },
+      { nom: 'Cuisine', x: 6, y: 4, largeur: 4, hauteur: 4 },
+    ],
+  },
   postes: [
     // ── Poste 1 : baie coulissante séjour ───────────────────────────────────
     {

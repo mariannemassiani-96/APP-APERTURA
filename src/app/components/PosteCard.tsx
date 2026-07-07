@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId } from 'react';
 
 import type { Poste } from '@/core/model/offre';
 
@@ -13,35 +13,36 @@ import type { Lexique } from './types';
  * Un poste du devis, présenté comme une ligne rassurante et cliquable.
  * Replié : il ressemble à une ligne de devis. Déplié : il révèle le bénéfice en
  * clair, les attributs, les performances (badge promesse/preuve), les variantes,
- * les preuves. La première ouverture déclenche la trace de consultation.
+ * les preuves.
+ *
+ * Expansion CONTRÔLÉE par le parent (OffreView) : cela permet d'ouvrir un poste
+ * précis depuis le plan et de garder la trace de consultation au même endroit.
  */
 export function PosteCard({
   poste,
   lexique,
-  onConsulter,
+  ouvert,
+  onToggle,
 }: {
   poste: Poste;
   lexique: Lexique;
-  onConsulter: (posteId: string) => void;
+  ouvert: boolean;
+  onToggle: (posteId: string) => void;
 }) {
-  const [ouvert, setOuvert] = useState(false);
   const regionId = useId();
-
-  function basculer() {
-    const prochain = !ouvert;
-    setOuvert(prochain);
-    if (prochain) onConsulter(poste.id);
-  }
 
   const labelPerf = (cle: string) => lexique.performances[cle]?.label ?? cle;
   const aidePerf = (cle: string) => lexique.performances[cle]?.aide;
   const labelAttr = (cle: string) => lexique.attributs[cle]?.label ?? cle;
 
   return (
-    <article className="overflow-hidden rounded-xl2 border border-noir/10 bg-white shadow-carte transition hover:shadow-carteHover">
+    <article
+      id={poste.id}
+      className="scroll-mt-24 overflow-hidden rounded-xl2 border border-noir/10 bg-white shadow-carte transition hover:shadow-carteHover"
+    >
       <button
         type="button"
-        onClick={basculer}
+        onClick={() => onToggle(poste.id)}
         aria-expanded={ouvert}
         aria-controls={regionId}
         className="flex w-full items-center gap-4 px-5 py-4 text-left"

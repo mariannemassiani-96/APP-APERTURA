@@ -1,6 +1,31 @@
-# Document de passation — Projet Lumen (incrément 1)
+# Document de passation — Projet Lumen
 
-_Date : 2026-07-06 — Secteur : menuiserie — Branche : `claude/lumen-augmented-quote-cwzy2a`_
+_Secteur : menuiserie — Branche : `claude/lumen-augmented-quote-cwzy2a` (déployée sur Vercel via `main`)_
+
+## Incrément 2 (2026-07-07) — mode « plan » + assistant non-bloquant + déploiement
+
+- **Déploiement Vercel** : l'app est en ligne (branche `main` = Lumen). Provider LLM
+  réglé par variables d'env dans Vercel. Correctif appliqué : le paramètre
+  `temperature` n'est plus envoyé par défaut (les modèles Claude récents le refusent).
+- **Mode « plan / spatialisé »** : sélecteur Liste / Plan sur la page offre. La vue
+  Plan dessine les pièces (données `offre.plan`, unités abstraites normalisées) et
+  place chaque poste sur le mur de sa façade (Nord haut / Sud bas / Est droite /
+  Ouest gauche). Clic sur un repère → bulle d'infos (bénéfice + prix) + « Voir le
+  détail » qui bascule en Liste, déplie le poste et le centre. Reste générique :
+  `PlanView` lit `offre.plan` + `poste.localisation`, aucun code métier dans `core`.
+  Nouveaux types génériques : `PiecePlan`, `PlanLogement` (`core/model/offre.ts`).
+- **Assistant « Demander » non-bloquant** : fenêtre flottante (bas-droit sur
+  ordinateur, feuille en bas sur mobile) SANS voile — le devis reste défilable et
+  cliquable pendant la conversation. `PosteCard` est passé en expansion contrôlée
+  (état remonté dans `OffreView`) pour permettre l'ouverture depuis le plan.
+- Vérifs : `typecheck` + `build` OK ; parcours plan → « Voir le détail » et
+  cliquabilité du devis pendant « Demander » testés (Playwright).
+
+---
+
+# Incrément 1 — base « devis augmenté »
+
+_Date : 2026-07-06_
 
 ## 1. Ce qui a été fait
 

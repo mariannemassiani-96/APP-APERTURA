@@ -6,6 +6,11 @@ le client final à **comprendre, visualiser, comparer et décider**.
 
 Ce premier incrément porte sur le secteur **menuiserie**, avec un devis exemple.
 
+**Deux modes de lecture** : une vue **Liste** (chaque poste se déplie) et une vue
+**Plan** (chaque menuiserie est située dans le logement, sur le mur de sa façade,
+cliquable). L'assistant **« Demander »** est une fenêtre non-bloquante : on peut
+l'interroger tout en continuant à parcourir le devis.
+
 ---
 
 ## Principe d'architecture : « le métier est de la DONNÉE, jamais du code »
@@ -61,7 +66,7 @@ src/
 └── app/                       # L'UI (Next App Router)
     ├── page.tsx               #   accueil : liste des offres
     ├── offre/[id]/page.tsx    #   la page "devis augmenté" (ouverte via son lien)
-    ├── components/            #   OffreView, PosteCard, badges, variantes, DemanderPanel
+    ├── components/            #   OffreView, PosteCard, PlanView, badges, variantes, DemanderPanel
     └── api/
         ├── demander/route.ts  #   assistant IA : faits de l'offre + KB -> couche LLM
         └── trace/route.ts     #   trace des consultations
