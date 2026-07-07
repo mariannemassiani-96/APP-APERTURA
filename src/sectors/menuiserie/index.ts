@@ -11,12 +11,14 @@ import { enregistrerOntologie } from '@/core/ontology/registry';
 
 import { connaissancesMenuiserie } from './knowledge';
 import { ontologieMenuiserie } from './ontology';
+import { offreAstolfi } from './seed.astolfi';
 import { offreExempleMenuiserie } from './seed.offre';
 
 enregistrerOntologie(ontologieMenuiserie);
 enregistrerOffre(offreExempleMenuiserie);
+enregistrerOffre(offreAstolfi);
 
-export { connaissancesMenuiserie, ontologieMenuiserie, offreExempleMenuiserie };
+export { connaissancesMenuiserie, ontologieMenuiserie, offreExempleMenuiserie, offreAstolfi };
 
 /** Base de connaissances par secteur, résolue par la route « Demander ». */
 export const connaissancesParSecteur: Record<string, typeof connaissancesMenuiserie> = {

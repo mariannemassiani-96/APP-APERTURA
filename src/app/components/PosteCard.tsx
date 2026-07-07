@@ -82,7 +82,8 @@ export function PosteCard({
           </p>
 
           <div className="mt-5 grid gap-6 sm:grid-cols-2">
-            {/* Performances */}
+            {/* Performances (masquées si le devis n'en chiffre aucune pour ce poste) */}
+            {poste.performances.length > 0 && (
             <section>
               <h4 className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-noir/50">
                 Performances
@@ -105,6 +106,7 @@ export function PosteCard({
                 ))}
               </ul>
             </section>
+            )}
 
             {/* Attributs */}
             <section>

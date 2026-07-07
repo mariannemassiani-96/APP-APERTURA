@@ -2,6 +2,25 @@
 
 _Secteur : menuiserie — Branche : `claude/lumen-augmented-quote-cwzy2a` (déployée sur Vercel via `main`)_
 
+## Incrément 3 (2026-07-07) — intégration d'un vrai devis
+
+- **Deuxième offre = devis réel** CASAPERTURA `P_2026-0029v2` (projet 4 logements
+  Calenzana), saisie à la main depuis le PDF dans `sectors/menuiserie/seed.astolfi.ts`
+  (17 postes, total 99 803,60 € HT — conforme au PDF). `exemple: false`.
+- **Discipline « cerveau de faits »** : tous les chiffres/caractéristiques (dimensions,
+  gamme Kawneer, coloris RAL 7016, vitrage 4/20/4 argon FE1.0, feuilleté SP10, surface,
+  poids, prix, quantités, garanties GPA/décennale, traçabilité WINDOW.ID) viennent
+  EXACTEMENT du devis ; les `benefice` sont `genere` et n'avancent aucun chiffre absent
+  du PDF (le devis ne chiffre pas de Uw/Rw par ligne — non inventé). RIB/IBAN et CGV du
+  PDF volontairement exclus.
+- Ontologie enrichie des attributs réels (gamme, coloris, surface, poids, pose,
+  fermeture, quantité, prix unitaire HT). `PosteCard` masque la rubrique
+  « Performances » quand un poste n'en chiffre aucune.
+- Pas de `plan` pour cette offre (projet multi-logements : le placement fidèle des
+  ouvertures demande une décision de périmètre — cf. points ouverts).
+- ⚠️ CONFIDENTIALITÉ : cette offre contient un nom client réel + des prix réels et est
+  accessible par lien sur le déploiement public. À anonymiser si diffusion large.
+
 ## Incrément 2 (2026-07-07) — mode « plan » + assistant non-bloquant + déploiement
 
 - **Déploiement Vercel** : l'app est en ligne (branche `main` = Lumen). Provider LLM

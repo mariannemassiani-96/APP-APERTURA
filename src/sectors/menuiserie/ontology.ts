@@ -46,9 +46,17 @@ export const ontologieMenuiserie: SectorOntology = {
     dimensions: { label: 'Dimensions', unite: 'mm' },
     materiau: { label: 'Matériau' },
     couleur: { label: 'Couleur' },
+    coloris: { label: 'Coloris' },
     vitrage: { label: 'Vitrage' },
     ouverture: { label: 'Type d’ouverture' },
     profil: { label: 'Profilé' },
+    gamme: { label: 'Gamme' },
+    surface: { label: 'Surface', unite: 'm²' },
+    poids: { label: 'Poids', unite: 'kg' },
+    pose: { label: 'Pose' },
+    fermeture: { label: 'Fermeture' },
+    quantite: { label: 'Quantité' },
+    prix_unitaire: { label: 'Prix unitaire HT' },
   },
 
   glossaire: {
