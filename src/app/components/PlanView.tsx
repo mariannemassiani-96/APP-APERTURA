@@ -113,7 +113,8 @@ export function PlanView({
   return (
     <div>
       <p className="mb-3 text-center text-sm text-noir/55">
-        Chaque menuiserie est posée sur le mur de sa pièce. Touchez un repère pour voir de quoi il s’agit.
+        Plan schématique (orientation indicative) : chaque menuiserie est posée sur le mur de sa
+        pièce. Touchez un repère pour voir de quoi il s’agit.
       </p>
 
       <div className="relative rounded-xl2 border border-noir/10 bg-white p-4 shadow-carte sm:p-6">
