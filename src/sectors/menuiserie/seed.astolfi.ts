@@ -448,4 +448,25 @@ export const offreAstolfi: Offre = {
       pose: false,
     }),
   ],
+  // Plans d'exemple (schématiques) + repères de démonstration. Dans le produit,
+  // le pro importe ses vrais plans et place lui-même les repères (voir HANDOFF).
+  plansImages: [
+    { id: 'rdc', nom: 'RDC', image: '/plans/rdc.svg' },
+    { id: 'r1', nom: 'R+1', image: '/plans/r1.svg' },
+  ],
+  reperes: [
+    // RDC (logement T3 type)
+    { posteId: 'pos-1', planId: 'rdc', x: 33.3, y: 95 }, // porte-fenêtre séjour (Sud)
+    { posteId: 'pos-2', planId: 'rdc', x: 3.3, y: 72.5 }, // fenêtre séjour (Ouest)
+    { posteId: 'pos-3', planId: 'rdc', x: 17.3, y: 5 }, // chambre 1
+    { posteId: 'pos-3', planId: 'rdc', x: 47.3, y: 5 }, // chambre 2
+    { posteId: 'pos-4', planId: 'rdc', x: 80, y: 5 }, // salle de bain
+    { posteId: 'pos-5', planId: 'rdc', x: 96.7, y: 72.5 }, // porte d'entrée
+    // R+1 (logement T2 type)
+    { posteId: 'pos-6', planId: 'r1', x: 73.3, y: 47.5 }, // porte-fenêtre séjour
+    { posteId: 'pos-7', planId: 'r1', x: 25, y: 5 }, // chambre
+    { posteId: 'pos-9', planId: 'r1', x: 47.3, y: 50 }, // oscillo cuisine
+    { posteId: 'pos-10', planId: 'r1', x: 80.7, y: 50 }, // oscillo cellier
+    { posteId: 'pos-11', planId: 'r1', x: 96.7, y: 25 }, // porte d'entrée
+  ],
 };

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Offre } from '@/core/model/offre';
 
 import { DemanderPanel } from './DemanderPanel';
+import { PlanImageView } from './PlanImageView';
 import { PlanView } from './PlanView';
 import { PosteCard } from './PosteCard';
 import { formaterEuros } from './PrixTag';
@@ -95,7 +96,9 @@ export function OffreView({ offre, lexique }: { offre: Offre; lexique: Lexique }
 
   const total = offre.postes.reduce((s, p) => s + p.prix.montant, 0);
   const tousProposes = offre.postes.every((p) => p.prix.statut === 'propose');
-  const aPlan = Boolean(offre.plan && offre.plan.pieces.length > 0);
+  const aPlanImage = Boolean(offre.plansImages && offre.plansImages.length > 0);
+  const aPlanSchema = Boolean(offre.plan && offre.plan.pieces.length > 0);
+  const aPlan = aPlanImage || aPlanSchema;
 
   return (
     <main style={styleMarque} className="fond-marque min-h-screen pb-28">
@@ -160,7 +163,14 @@ export function OffreView({ offre, lexique }: { offre: Offre; lexique: Lexique }
         )}
 
         {/* Contenu */}
-        {vue === 'plan' && aPlan ? (
+        {vue === 'plan' && aPlanImage ? (
+          <PlanImageView
+            offre={offre}
+            consultes={consultes}
+            onConsulter={marquerConsulte}
+            onVoirDetail={voirDetail}
+          />
+        ) : vue === 'plan' && aPlanSchema ? (
           <PlanView
             offre={offre}
             consultes={consultes}

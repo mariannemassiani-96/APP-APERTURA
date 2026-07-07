@@ -112,6 +112,29 @@ export interface PlanLogement {
   pieces: PiecePlan[];
 }
 
+/**
+ * Plan « image » : un vrai plan (photo/export/PDF rasterisé) importé par le pro.
+ * `image` est une URL (asset servi) ou une data-URI. Générique : le moteur ne
+ * connaît que des plans et des repères, jamais la sémantique métier.
+ */
+export interface PlanImage {
+  id: string; // ex. 'rdc', 'r1'
+  nom: string; // ex. 'RDC', 'R+1'
+  image: string; // URL ou data-URI
+}
+
+/**
+ * Repère de positionnement : rattache un poste à un point (x,y en % du plan) sur
+ * un plan donné. Plusieurs repères peuvent référencer le même poste (jusqu'à sa
+ * quantité) et se répartir entre plusieurs plans (RDC / R+1…).
+ */
+export interface Repere {
+  posteId: string;
+  planId: string;
+  x: number; // 0–100 (% de la largeur du plan)
+  y: number; // 0–100 (% de la hauteur du plan)
+}
+
 /** Identité + marque blanche du professionnel émetteur. */
 export interface Branding {
   couleurs: {
@@ -132,8 +155,12 @@ export interface Offre {
   pro: { nom: string; branding: Branding };
   client: { nom: string };
   postes: Poste[];
-  /** Plan schématique optionnel du logement, pour le mode « plan ». */
+  /** Plan schématique optionnel du logement (positions dérivées des pièces). */
   plan?: PlanLogement;
+  /** Plans « image » importés (onglets RDC / R+1…), prioritaires sur `plan` si présents. */
+  plansImages?: PlanImage[];
+  /** Repères de positionnement des postes sur les plans image. */
+  reperes?: Repere[];
   /** Marque explicitement une offre comme donnée d'exemple (jamais présentée comme certifiée). */
   exemple?: boolean;
 }

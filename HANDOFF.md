@@ -2,6 +2,32 @@
 
 _Secteur : menuiserie — Branche : `claude/lumen-augmented-quote-cwzy2a` (déployée sur Vercel via `main`)_
 
+## Incrément 4 (2026-07-07) — plan interactif sur vrais plans (vue client)
+
+- **Modèle générique** (`core/model/offre.ts`) : `PlanImage { id, nom, image }` et
+  `Repere { posteId, planId, x, y }` (x/y en % du plan). `Offre.plansImages?` +
+  `Offre.reperes?`. Plusieurs repères peuvent viser le même poste (jusqu'à sa qté)
+  et se répartir sur plusieurs plans.
+- **Vue client** (`app/components/PlanImageView.tsx`) : onglets par plan (RDC / R+1),
+  plan image en fond, repères numérotés cliquables → bulle (bénéfice + prix) +
+  « Voir le détail » (bascule liste + dépliage). `OffreView` choisit : plans image
+  si présents, sinon plan schématique, sinon liste seule.
+- **Assets d'exemple** : `public/plans/rdc.svg` et `r1.svg` (plans schématiques
+  stylés). Le devis Astolfi est seedé avec ces 2 plans + 11 repères de démonstration.
+- Vérifs : `typecheck` + `build` OK ; parcours plan image (onglets, bulle, voir le
+  détail, bascule RDC/R+1) testé (Playwright).
+
+### ⚠️ Éditeur pro & persistance (prochaine étape indispensable)
+La vue CLIENT est pilotée par la donnée (seed). L'ÉDITEUR PRO self-service (importer
+un vrai plan + placer les repères + enregistrer) a été **validé en prototype**
+(Artifact `lumen-plan-editor.html`, avec onglets RDC/R+1, gestion des quantités et
+contrôle de complétude) mais **n'est pas encore dans l'app** : il exige une
+**persistance** (base de données pour les repères + stockage type blob pour les
+images de plans), car l'app est en mémoire et Vercel (serverless) ne conserve pas les
+écritures runtime. C'est le point de départ du prochain incrément (choix du stockage
+à faire avec le client). En attendant, on conçoit les placements dans le prototype et
+on les injecte dans le seed.
+
 ## Incrément 3 (2026-07-07) — intégration d'un vrai devis
 
 - **Deuxième offre = devis réel** CASAPERTURA `P_2026-0029v2` (projet 4 logements
